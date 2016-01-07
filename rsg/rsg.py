@@ -13,7 +13,7 @@ class CFG(object):
 
     """
     
-    def __init__(self, nonterminal_start, nonterminal_end, **cfgGrammar):
+    def __init__(self, nonterminal_start, nonterminal_end, cfgGrammar):
         """ Inititalize the CFG instance. 
 
         The method takes three arguments:
@@ -222,7 +222,7 @@ def main(filename):
     parser = GrammarParser(parsing_grammar, grammar_filename=filename)
     grammar = parser.load_grammar()
     cfg = CFG(parsing_grammar["nonterminal_start"],
-           parsing_grammar["nonterminal_end"], **grammar)
+           parsing_grammar["nonterminal_end"], grammar)
     generated_string = cfg.generate()
     print '\n\n' + utility.wrapped_text(generated_string) + '\n'
 
