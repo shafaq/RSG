@@ -236,5 +236,6 @@ def main(filename):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "Grammar File Name not provided"
+        print "usage:python rsg.py <grammar-file>"
         sys.exit(1)
     main(sys.argv[1])
