@@ -55,15 +55,20 @@ class CFG(object):
                          self.nonterminal_end)
         utility.debug_print(pattern_string, "pattern")
         pattern_nt = re.compile(pattern_string)
+        #find a match for a not terminal in the given production
         match = pattern_nt.search(production)
         matched_nonterminal = match.group('nonterminal')
         utility.debug_print(match.group('nonterminal'),
                            "matched non terminal = ")
+        #get a random production for the matched non terminal
         substitution = self. get_random_production(matched_nonterminal)
         utility.debug_print(substitution, "substitution")
+        #split the string around found non terminal
         lst = pattern_nt.split(production, 1)
+        # substitute the random production for non terminal
         new_production = lst[0] + substitution + lst[2]
         utility.debug_print(new_production, "new_production")
+        # if new production still has more non terminals
         if not pattern_nt.search(new_production):
             return new_production
         return self.__rgenerate(new_production)
@@ -78,7 +83,7 @@ class CFG(object):
             prod_lst_len = len(self.grammar[key])
         except KeyError:
             print "Could not find a non terminal in CFG. Exiting application"
-            sys.exit(0)
+            sys.exit(1)
         else:
             random_num = randint(0, prod_lst_len - 1)
             return self.grammar[key][random_num]
@@ -100,7 +105,7 @@ class GrammarParser(object):
 
         if not(grammar_filename or grammar_string):
             print "A filename or string containing grammar should be passed."
-            sys.exit(0)
+            sys.exit(1)
 
         self.parsing_rules = {x: re.compile(parsing_rules[x])
                             for x in parsing_rules.keys()}
@@ -121,6 +126,8 @@ class GrammarParser(object):
         """ Remove extra spaces between words, at the end and start."""
 
         extra_spaces = re.compile(r'\s{2,}')
+        end_space = re.compile(r'\s+[.!?]')
+        end_space.sub("", string)
         return extra_spaces.sub(" ", string).strip()
     
     def load_grammar(self):
@@ -229,5 +236,5 @@ def main(filename):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "Grammar File Name not provided"
-        sys.exit(0)
+        sys.exit(1)
     main(sys.argv[1])
